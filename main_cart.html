@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Cart</title>
+</head>
+<body>
+    <h1>Cart Items</h1>
+    <ul id="cartItemsList"></ul>
+
+    <script>
+        // Function to remove an item from the cart
+        function removeItem(productId) {
+            // Send a POST request to removeItem.php with the product ID
+            fetch('removeItem.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productId: productId }),
+            })
+            .then(response => response.text())
+            .then(message => {
+                alert(message); // Display the response message
+                // Reload the page to update the cart items list
+                location.reload();
+            })
+            .catch(error => console.error('Error removing item:', error));
+        }
+
+        // Fetch cart items from fetchCartItems.php
+        fetch('fetchCartItems.php')
+            .then(response => response.json())
+            .then(cartItems => {
+                // Render cart items on the page
+                const cartItemsList = document.getElementById('cartItemsList');
+                cartItems.forEach(productId => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Product ID: ${productId}`;
+                    // Create a remove button for each item
+                    const removeButton = document.createElement('button');
+                    removeButton.textContent = 'Remove';
+                    // Pass the productId to the removeItem function
+                    removeButton.addEventListener('click', () => {
+                        removeItem(productId);
+                    });
+                    listItem.appendChild(removeButton);
+                    cartItemsList.appendChild(listItem);
+                });
+                // Add a checkout button
+                const checkoutButton = document.createElement('button');
+                checkoutButton.textContent = 'Checkout';
+                checkoutButton.addEventListener('click', () => {
+                    // Handle checkout logic here
+                    alert('Checkout button clicked');
+                });
+                cartItemsList.appendChild(checkoutButton);
+            })
+            .catch(error => console.error('Error fetching cart items:', error));
+    </script>
+</body>
+</html>

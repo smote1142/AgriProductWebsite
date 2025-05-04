@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gardening Supplies Store</title>
+    <style>
+        /* Styles for the navigation bar */
+        .navbar {
+            background-color: #007bff;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 20px;
+        }
+        .navbar button {
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+        /* Style for cart */
+        #cart {
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            display: none;
+        }
+        #cart ul {
+            list-style: none;
+            padding: 0;
+        }
+        #cart ul li {
+            margin-bottom: 10px;
+        }
+        #cart ul li span {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        #cart button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+        #cart button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="main.html">Home</a>
+    <a href="Aboutus.html">About us</a>
+    <a href="contactus.html">Contact</a>
+    <a href="search.html">search</a>
+    <button id="viewCartButton" type="button">View Cart</button>
+</div>
+
+<div id="cart">
+    <h2>Shopping Cart</h2>
+    <ul id="cartItems"></ul>
+    <p>Total: <span id="cartTotal">0.00</span></p>
+    <button id="checkoutButton">Checkout</button>
+</div>
+
+<script>
+    var cart = [];
+    var cartTotal = 0;
+
+    // Function to add items to the cart
+    function addToCart(item) {
+        cart.push(item);
+        updateCart();
+    }
+
+    // Function to update the cart
+    function updateCart() {
+        var cartItems = document.getElementById('cartItems');
+        cartItems.innerHTML = '';
+        cartTotal = 0;
+
+        cart.forEach(function(item) {
+            var li = document.createElement('li');
+            li.textContent = item.name + ' - $' + item.price;
+            cartItems.appendChild(li);
+            cartTotal += item.price;
+        });
+
+        document.getElementById('cartTotal').textContent = cartTotal.toFixed(2);
+
+        // Show the cart section
+        document.getElementById('cart').style.display = 'block';
+    }
+
+    // Function to handle viewing the cart
+    document.getElementById('viewCartButton').addEventListener('click', function() {
+        updateCart();
+    });
+
+    // Check if there are items in localStorage on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        var storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
+            updateCart();
+        }
+    });
+
+    // Save cart to localStorage whenever it's updated
+    function saveCartToLocalStorage() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    // Simulated predefined items
+    var predefinedItems = [
+        { name: "Fertilizer", price: 10 },
+        { name: "Seeds", price: 5 },
+        { name: "Irrigation", price: 20 }
+    ];
+
+    // Automatically add predefined items to the cart on page load
+    predefinedItems.forEach(function(item) {
+        addToCart(item);
+    });
+</script>
+
+</body>
+</html>

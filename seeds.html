@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gardening Supplies Store</title>
+    <style>
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            float: left;
+            text-align: center; /* Center align text */
+        }
+        .product img {
+            max-width: 100%; /* Set the maximum width of the image to 100% of the container */
+            height: auto; /* Allow the height to adjust automatically */
+            max-height: 150px; /* Set a maximum height for the image */
+        }
+        .btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        #cart {
+            float: right;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 200px;
+        }
+        #cart ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #cart-buttons {
+            margin-top: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        nav li {
+            float: left;
+        }
+        nav li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav li a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="main.php">Home</a></li>
+            <li><a href="contactus.html">contact us</a></li>
+            <li><a href="Aboutus.html">About us</a></li>
+            <a href="search.html">search</a>
+        </ul>
+    </nav>
+    <div id="products">
+        <!-- Gardening Supplies -->
+        <div class="product">
+            <img src="seed1.jpg" alt="Gardening Supply 1">
+            <h3>seed</h3>
+            <p>Price: ₹200</p>
+            <input type="number" id="quantityGardenSupply1" value="1" min="1">
+            <button class="btn" onclick="addToCart('Gardening Supply 1', 200, 'quantityGardenSupply1')">Add to Cart</button>
+            <button class="btn" onclick="redirectToCheckout('Gardening Supply 1', 200, 'quantityGardenSupply1')">Buy Now</button>
+        </div>
+
+        <div class="product">
+            <img src="seed2.jpg" alt="Gardening Supply 2">
+            <h3>seed</h3>
+            <p>Price: ₹300</p>
+            <input type="number" id="quantityGardenSupply2" value="1" min="1">
+            <button class="btn" onclick="addToCart('Gardening Supply 2', 300, 'quantityGardenSupply2')">Add to Cart</button>
+            <button class="btn" onclick="redirectToCheckout('Gardening Supply 2', 300, 'quantityGardenSupply2')">Buy Now</button>
+        </div>
+
+        <div class="product">
+            <img src="seed3.jpg" alt="Gardening Supply 3">
+            <h3>seed</h3>
+            <p>Price: ₹250</p>
+            <input type="number" id="quantityGardenSupply3" value="1" min="1">
+            <button class="btn" onclick="addToCart('Gardening Supply 3', 250, 'quantityGardenSupply3')">Add to Cart</button>
+            <button class="btn" onclick="redirectToCheckout('Gardening Supply 3', 250, 'quantityGardenSupply3')">Buy Now</button>
+        </div>
+
+        <div class="product">
+            <img src="seed4.jpg" alt="Gardening Supply 4">
+            <h3>seeds</h3>
+            <p>Price: ₹180</p>
+            <input type="number" id="quantityGardenSupply4" value="1" min="1">
+            <button class="btn" onclick="addToCart('Gardening Supply 4', 180, 'quantityGardenSupply4')">Add to Cart</button>
+            <button class="btn" onclick="redirectToCheckout('Gardening Supply 4', 180, 'quantityGardenSupply4')">Buy Now</button>
+        </div>
+    </div>
+
+    <div id="cart">
+        <h2>Shopping Cart</h2>
+        <ul id="cart-items"></ul>
+        <p>Total: ₹<span id="cart-total">0.00</span></p>
+        <div id="cart-buttons">
+            <button class="btn" onclick="clearCart()">Clear Cart</button>
+            <button class="btn" onclick="redirectToCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(productName, price, quantityId) {
+            let quantity = document.getElementById(quantityId).value;
+            let item = {
+                name: productName,
+                price: price,
+                quantity: parseInt(quantity)
+            };
+            cart.push(item);
+            updateCart();
+        }
+
+        function buyNow(productName, price, quantityId) {
+            addToCart(productName, price, quantityId);
+            checkout();
+        }
+
+        function updateCart() {
+            let cartItems = document.getElementById('cart-items');
+            let total = 0;
+            cartItems.innerHTML = '';
+            cart.forEach(item => {
+                let li = document.createElement('li');
+                li.textContent = `${item.name} x ${item.quantity} - ₹${item.price * item.quantity}`;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+            });
+            document.getElementById('cart-total').textContent = total.toFixed(2);
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
+
+        function redirectToCheckout() {
+            window.location.href = 'checkout.html';
+        }
+    </script>
+</body>
+</html>

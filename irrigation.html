@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irrigation Systems Store</title>
+    <style>
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            float: left;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+        .btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        nav li {
+            float: left;
+        }
+        nav li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav li a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="main.php">Home</a></li>
+            <li><a href="contactus.html">contact us</a></li>
+            <li><a href="Aboutus.html">About us</a></li>
+            <a href="search.html">search</a>
+        </ul>
+    </nav>
+    <div id="products">
+        <!-- Irrigation Systems -->
+        <div class="product">
+            <img src="irrigation1.jpg" alt="Irrigation System 1">
+            <h3>Irrigation System 1</h3>
+            <p>Price: ₹5000</p>
+            <input type="number" id="quantityIrrigation1" value="1" min="1">
+            <button class="btn" onclick="addToCart('Irrigation System 1', 5000, 'quantityIrrigation1')">Add to Cart</button>
+            <button class="btn" onclick="redirectToCheckout('Irrigation System 1', 5000, 'quantityIrrigation1')">Buy Now</button>
+        </div>
+
+        <div class="product">
+            <img src="irrigation2.jpg" alt="Irrigation System 2">
+            <h3>Irrigation System 2</h3>
+            <p>Price: ₹7000</p>
+            <input type="number" id="quantityIrrigation2" value="1" min="1">
+            <button class="btn" onclick="addToCart('Irrigation System 2', 7000, 'quantityIrrigation2')">Add to Cart</button>
+            <button class="btn" onclick="redirectToCheckout('Irrigation System 2', 7000, 'quantityIrrigation2')">Buy Now</button>
+        </div>
+
+        <div class="product">
+            <img src="irrigation3.jpg" alt="Irrigation System 3">
+            <h3>Irrigation System 3</h3>
+            <p>Price: ₹9000</p>
+            <input type="number" id="quantityIrrigation3" value="1" min="1">
+            <button class="btn" onclick="addToCart('Irrigation System 3', 7000, 'quantityIrrigation3')">Add to Cart</button>
+            <button class="btn" onclick="redirectToCheckout('Irrigation System 3', 7000, 'quantityIrrigation3')">Buy Now</button>
+        </div>
+
+        <div class="product">
+            <img src="irrigation4.jpg" alt="Irrigation System 4">
+            <h3>Irrigation System 4</h3>
+            <p>Price: ₹1000</p>
+            <input type="number" id="quantityIrrigation4" value="1" min="1">
+            <button class="btn" onclick="addToCart('Irrigation System 4', 7000, 'quantityIrrigation4')">Add to Cart</button>
+            <button class="btn" onclick="redirectToCheckout('Irrigation System 4', 7000, 'quantityIrrigation4')">Buy Now</button>
+        </div>
+    </div>
+
+    <div id="cart">
+        <h2>Shopping Cart</h2>
+        <ul id="cart-items"></ul>
+        <p>Total: ₹<span id="cart-total">0.00</span></p>
+        <button class="btn" onclick="clearCart()">Clear Cart</button>
+        <button class="btn" onclick="redirectToCheckout()">Checkout</button>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(productName, price, quantityId) {
+            let quantity = document.getElementById(quantityId).value;
+            let item = {
+                name: productName,
+                price: price,
+                quantity: parseInt(quantity)
+            };
+            cart.push(item);
+            updateCart();
+        }
+
+        function buyNow(productName, price, quantityId) {
+            addToCart(productName, price, quantityId);
+            checkout();
+        }
+
+        function updateCart() {
+            let cartItems = document.getElementById('cart-items');
+            let total = 0;
+            cartItems.innerHTML = '';
+            cart.forEach(item => {
+                let li = document.createElement('li');
+                li.textContent = `${item.name} x ${item.quantity} - ₹${item.price * item.quantity}`;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+            });
+            document.getElementById('cart-total').textContent = total.toFixed(2);
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
+
+        function redirectToCheckout() {
+            window.location.href = 'checkout.html';
+        }
+    </script>
+</body>
+</html>

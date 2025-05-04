@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gardening Supplies Store</title>
+    <style>
+        /* Styles for the navigation bar */
+        .navbar {
+            background-color: #101111;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 20px;
+        }
+        .navbar input[type="text"] {
+            padding: 6px;
+            margin-right: 16px;
+            border: none;
+            font-size: 17px;
+        }
+        /* Style the submit button */
+        .navbar button[type="submit"] {
+            padding: 6px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .navbar button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        /* Style for search results */
+        #searchResults {
+            padding: 20px;
+        }
+        #searchResults ul {
+            list-style: none;
+            padding: 0;
+        }
+        #searchResults ul li {
+            margin-bottom: 5px;
+        }
+        #searchResults ul li a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        /* Style for autocomplete suggestions */
+        .autocomplete-menu {
+            position: absolute;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+            z-index: 100;
+            width: calc(100% - 40px);
+            margin-top: 5px;
+            left: 20px;
+        }
+        .autocomplete-menu a {
+            display: block;
+            padding: 10px;
+            color: black;
+            text-decoration: none;
+        }
+        .autocomplete-menu a:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="main.php">Home</a>
+    <a href="Aboutus.html">About us</a>
+    <a href="contactus.html">Contact</a>
+    <div class="autocomplete">
+        <input id="searchInput" type="text" placeholder="Search...">
+        <div id="autocomplete-menu" class="autocomplete-menu"></div>
+    </div>
+    <button id="searchButton" type="button">Search</button>
+    <button id="clearButton" type="button">Clear</button>
+</div>
+
+<div id="searchResults">
+    <h2>Search Results</h2>
+    <ul id="resultsList"></ul>
+</div>
+
+<script>
+    var searchInput = document.getElementById('searchInput');
+    var autocompleteMenu = document.getElementById('autocomplete-menu');
+
+    // Simulated list of suggestions
+    var suggestions = [
+        { name: "Fertilizer", link: "Fertilizers.html" },
+        { name: "Seeds", link: "seeds.html" },
+        { name: "Irrigation", link: "irrigation.html" },
+        { name: "Pest Control", link: "pestcontrol.html" },
+        { name: "Organic Products", link: "organic.html" },
+        { name: "Plant Care", link: "plantcare.html" },
+        { name: "Gardening", link: "gardening.html" }
+    ];
+
+    searchInput.addEventListener('input', function() {
+        var searchTerm = this.value.toLowerCase();
+        autocompleteMenu.innerHTML = '';
+
+        var matchingSuggestions = suggestions.filter(function(suggestion) {
+            return suggestion.name.toLowerCase().includes(searchTerm);
+        });
+
+        if (matchingSuggestions.length > 0) {
+            matchingSuggestions.forEach(function(suggestion) {
+                var link = document.createElement('a');
+                link.textContent = suggestion.name;
+                link.href = suggestion.link;
+                link.addEventListener('click', function(e) {
+                    searchInput.value = suggestion.name;
+                    autocompleteMenu.style.display = 'none';
+                    e.preventDefault();
+                    window.location.href = suggestion.link;
+                });
+                autocompleteMenu.appendChild(link);
+            });
+            autocompleteMenu.style.display = 'block';
+        } else {
+            autocompleteMenu.style.display = 'none';
+        }
+    });
+
+    searchInput.addEventListener('focus', function() {
+        if (autocompleteMenu.children.length > 0) {
+            autocompleteMenu.style.display = 'block';
+        }
+    });
+
+    searchInput.addEventListener('blur', function() {
+        setTimeout(function() {
+            autocompleteMenu.style.display = 'none';
+        }, 300);
+    });
+
+    document.getElementById('searchButton').addEventListener('click', function() {
+        var searchTerm = searchInput.value.toLowerCase();
+        var matchingResult = suggestions.find(function(item) {
+            return item.name.toLowerCase() === searchTerm;
+        });
+
+        if (matchingResult) {
+            displayResults([matchingResult]);
+        } else {
+            displayResults([]);
+        }
+    });
+
+    document.getElementById('clearButton').addEventListener('click', function() {
+        searchInput.value = '';
+        autocompleteMenu.style.display = 'none';
+        document.getElementById('searchResults').style.display = 'none';
+    });
+
+    function displayResults(results) {
+        var resultsList = document.getElementById('resultsList');
+        resultsList.innerHTML = '';
+
+        if (results.length === 0) {
+            var li = document.createElement('li');
+            li.textContent = "No results found";
+            resultsList.appendChild(li);
+        } else {
+            results.forEach(function(product) {
+                var li = document.createElement('li');
+                var link = document.createElement('a');
+                link.textContent = product.name;
+                link.href = product.link;
+                li.appendChild(link);
+                resultsList.appendChild(li);
+            });
+        }
+        document.getElementById('searchResults').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
